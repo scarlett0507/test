@@ -1,10 +1,10 @@
-Full Page Intro & Navigation
+SVG Modal Window
 =========
 
-An intro page, focused around a full width background image and a bold animated menu. And, for browsers that support it, a nice iOS-like blurred effect behind the navigation.
+A simple modal window with an animated SVG background.
 
-[Article on CodyHouse](http://codyhouse.co/gem/intro-page-full-width-navigation/)
+[Article on CodyHouse](http://codyhouse.co/?p=891)
 
-[Demo](http://codyhouse.co/demo/full-page-intro-and-navigation/index.html)
+[Demo](http://codyhouse.co/demo/svg-modal-window/index.html)
  
 [Terms](http://codyhouse.co/terms/)
