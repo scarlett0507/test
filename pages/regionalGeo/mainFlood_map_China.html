@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>中国の例</title>
+  <script src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="../../css/disaster_font_china.css" />
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.7/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.7/"></script>
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/WebTileLayer",
+      "esri/widgets/Expand",
+      "esri/layers/FeatureLayer",
+      "esri/geometry/support/webMercatorUtils",
+      "esri/widgets/BasemapGallery",
+      "dojo/on",
+      "esri/layers/KMLLayer",
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Compass",
+      "dojo/domReady!"
+
+    ], function(
+      Map,
+      MapView,
+      WebTileLayer,
+      Expand,
+      FeatureLayer,
+      webMercatorUtils,
+      BasemapGallery,
+      on,
+      KMLLayer,
+      ScaleBar,
+      Compass
+    ) {
+     
+        const shelter = new KMLLayer({
+            url:"https://scarlett0507.github.io/SongYuan/shelterp.kmz",
+            id:"shelter",
+            copyright:"根据吉林市地震局网站公布信息制作而成",
+            visible: false
+          });
+
+          const flood = new KMLLayer({
+          url:"https://scarlett0507.github.io/SongYuan/water.kmz",
+          id:"flood",
+          copyright:"根据DEM数据制作而成",
+          opacity:0.6
+          });
+
+          const did = new KMLLayer({
+          url:"https://scarlett0507.github.io/SongYuan/Line.kmz",
+          id:"did",
+          copyright:"",
+          visible: false,
+          opacity:0.6
+          });
+
+      const map = new Map({
+          basemap: "osm",
+          layers: [flood,did,shelter]
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [124.8205, 45.1019],
+          zoom: 12
+        });
+        
+        
+        const basemapGallery = new Expand({
+            content: new BasemapGallery({
+              view: view,
+              style: "card" // other styles include 'classic'
+            }),
+            view: view,
+            expanded: false
+          });
+          view.ui.add(basemapGallery, "top-left");
+
+        const scalebar = new ScaleBar({
+          view: view,
+          unit: "dual"
+        });
+        view.ui.add(scalebar, "bottom-left");
+
+        var compass = new Compass({
+        view: view
+        });
+        view.ui.add(compass, "top-left");
+        
+      
+
+      view.on("layerview-create", function(event) {
+           if (event.layer.id === "shelter"){
+            console.log("shelterの LayerView が作成されました!", event.layerView);
+          }
+          if (event.layer.id === "flood"){
+           console.log("floodの LayerView が作成されました!", event.layerView);
+         }
+         if (event.layer.id === "did"){
+          console.log("didの LayerView が作成されました!", event.layerView);
+        }
+        });
+
+    const shelterToggle = document.getElementById("shelter");
+    const floodToggle = document.getElementById("flood");
+    const didToggle = document.getElementById("did");
+
+      on(shelterToggle, "change", function() {
+        shelter.visible = shelterToggle.checked;
+      });
+      on(floodToggle, "change", function() {
+        flood.visible = floodToggle.checked;
+      });
+      on(didToggle, "change", function() {
+        did.visible = didToggle.checked;
+      });
+    });
+    
+  </script>
+</head>
+<body>
+
+  <div id="viewDiv" ><button id="toggle" type="button" class="my_button">凡例</button></div>
+  <div class="container">
+    <div class="layerToggle">
+      <div id="title"><br>レイヤ</div>
+      <div class="content">
+        <p><input type="checkbox" id="shelter"/> 一次避難所<br>
+        <img src="../../img/Songh_shelter.png"><br>
+        <p><input type="checkbox" id="did"/> 安全避難線<br>
+        <img src="../../img/Songh_line.png"><br>
+        <p><input type="checkbox" id="flood"  checked /> 想定浸水区域域<br>
+        <div style="width:100px; height:90px; margin:0 auto;">
+	    <img src="../../img/Songh_depth.png"><br></div>
+      <p style="text-align: center; font-size:10px;"><a href="https://github.com/yamauchi-inochu/arcgis_api">この地図について</a></p>
+      </div>
+      </div>
+   </div>
+  
+   
+ <script>
+  $(document).ready(function(){
+   $('#toggle').click(function(){
+    $('.layerToggle').animate({width:'toggle'},200);
+   });
+  });
+ </script>
+ 
+</body>
+</html>
